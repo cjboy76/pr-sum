@@ -1,11 +1,11 @@
 import { Card, Collapse, Tag } from "antd"
 import { LockOutlined } from '@ant-design/icons';
 import dayjs from "dayjs";
-import { PullRequestContributionsByRepository } from "@/__generated__/graphql";
+import { ContributionsQuery } from "@/__generated__/types";
 
 type PRListProps = {
   isFetching: boolean
-  contributions: PullRequestContributionsByRepository[] | undefined
+  contributions: ContributionsQuery['viewer']['contributionsCollection']['pullRequestContributionsByRepository'] | undefined
 }
 
 export function PRList({ isFetching, contributions }: PRListProps) {
@@ -13,7 +13,7 @@ export function PRList({ isFetching, contributions }: PRListProps) {
   if (isFetching) return <div className="h-40 p-4 grid place-items-center text-gray-500 text-xs"><span>Loading...</span></div>
   return (
     <div className="mt-4 mb-10">
-      {contributions.map(con => (<PRCard key={con.repository.name} con={con} />))}
+      {contributions.map(contributionByRepo => (<PRCard key={contributionByRepo.repository.name} contributionByRepo={contributionByRepo} />))}
     </div>
   )
 }
@@ -33,8 +33,8 @@ const tagColorMap = {
   MERGED: 'purple'
 }
 
-function PRCard({ con }: { con: PullRequestContributionsByRepository }) {
-  const items = con.contributions.nodes ? con.contributions.nodes.map((node) => {
+function PRCard({ contributionByRepo }: { contributionByRepo: ContributionsQuery['viewer']['contributionsCollection']['pullRequestContributionsByRepository'][number] }) {
+  const items = contributionByRepo.contributions.nodes ? contributionByRepo.contributions.nodes.map((node) => {
     if (!node) return {}
     const Info = () => {
       return <>
@@ -52,11 +52,11 @@ function PRCard({ con }: { con: PullRequestContributionsByRepository }) {
   return (
     <Card
       className="mb-4"
-      title={con.repository.name}
+      title={contributionByRepo.repository.name}
       extra={
         <CardExtra
-          owner={con.repository.owner.login}
-          isPrivate={con.repository.isPrivate} />
+          owner={contributionByRepo.repository.owner.login}
+          isPrivate={contributionByRepo.repository.isPrivate} />
       }>
       <Collapse items={items} defaultActiveKey={['1']} />
     </Card>

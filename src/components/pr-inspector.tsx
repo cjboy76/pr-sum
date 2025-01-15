@@ -6,25 +6,31 @@ import { Button } from 'antd'
 
 export function PRInspector() {
   const [month, setMonth] = useState<Date>()
-  const [contributions, fetching] = useContributions(month)
+  const { data: contributionsData, loading } = useContributions(month)
+  const contributions = contributionsData?.viewer.contributionsCollection.pullRequestContributionsByRepository
 
   const onRepoFormFinish: ComponentProps<typeof RepoForm>['onFinish'] = (values) => {
     setMonth(values['month'])
   }
 
+  const onGenerate = () => {
+
+  }
+
   return (
     <div className='flex flex-col relative'>
-      <RepoForm isFetching={fetching} onFinish={onRepoFormFinish} />
+      <RepoForm isFetching={loading} onFinish={onRepoFormFinish} />
       <PRList
-        isFetching={fetching}
+        isFetching={loading}
         contributions={contributions}
       />
       <Button
         size='large'
-        color="default" 
+        color="default"
         variant="solid"
         className="fixed bottom-5 left-1/2 -translate-x-1/2"
-        disabled={fetching || !contributions}
+        disabled={loading || !contributions}
+        onClick={onGenerate}
       >
         Generate Summary
       </Button>
