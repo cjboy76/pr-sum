@@ -1,4 +1,4 @@
-import { useQuery } from 'urql'
+import { useQuery } from '@apollo/client'
 import { UserQuery } from './api/github'
 import { PRInspector } from './components/pr-inspector'
 
@@ -16,8 +16,7 @@ export default App
 
 
 function Header() {
-  const [result] = useQuery({ query: UserQuery })
-  const { data } = result
+  const { data } = useQuery(UserQuery)
   const identity = data ? data.viewer.login : ''
   return (
     <div className='flex justify-between'>

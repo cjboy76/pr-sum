@@ -5,20 +5,26 @@ const config: CodegenConfig = {
     {
       'https://api.github.com/graphql': {
         headers: {
-          Authorization: `${process.env.GITHUB_TOKEN}`,
+          Authorization: `Bearer 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`,
           'User-Agent': 'Node'
         },
       },
     },
   ],
   // schema: 'schema.docs.graphql',
-  documents: ['src/**/*.ts'],
+  documents: ['src/**/*.ts', 'src/**/*.tsx'],
   ignoreNoDocuments: true, // for better experience with the watcher
   generates: {
-    './src/gql/': {
-      preset: 'client'
+    'src/__generated__/': {
+      preset: 'client',
+      presetConfig: {
+        gqlTagName: "gql",
+      },
+    },
+    "./src/__generated__/types.ts": {
+      plugins: ["typescript", "typescript-operations"],
     }
-  }
+  },
 };
 
 export default config;

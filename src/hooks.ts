@@ -1,5 +1,5 @@
 import dayjs from "dayjs"
-import { useQuery } from "urql"
+import { useQuery } from "@apollo/client"
 import { ContributionsQuery } from "./api/github"
 
 export function useContributions(month: Date | undefined) {
@@ -8,11 +8,8 @@ export function useContributions(month: Date | undefined) {
       from: month ? dayjs(month).startOf('month').toISOString(): '',
       to: month ? dayjs(month).endOf('month').toISOString(): ''
     }
-    const [{ data, fetching }] = useQuery({ 
-      query: ContributionsQuery,
+    return useQuery(ContributionsQuery, { 
       variables,
-      pause: !isValidated
+      skip: !isValidated
     })
-    if (!data) return [data, fetching]
-    return [data.viewer.contributionsCollection.pullRequestContributionsByRepository, fetching]
   }

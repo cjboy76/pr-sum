@@ -1,10 +1,11 @@
 import { Card, Collapse, Tag } from "antd"
 import { LockOutlined } from '@ant-design/icons';
 import dayjs from "dayjs";
+import { PullRequestContributionsByRepository } from "@/__generated__/graphql";
 
 type PRListProps = {
   isFetching: boolean
-  contributions: [] | null
+  contributions: PullRequestContributionsByRepository[] | undefined
 }
 
 export function PRList({ isFetching, contributions }: PRListProps) {
@@ -32,12 +33,13 @@ const tagColorMap = {
   MERGED: 'purple'
 }
 
-function PRCard({con}) {
-  const items = con.contributions.nodes.map((node) => {
+function PRCard({ con }: { con: PullRequestContributionsByRepository }) {
+  const items = con.contributions.nodes ? con.contributions.nodes.map((node) => {
+    if (!node) return {}
     const Info = () => {
       return <>
+        <div><a target="_blank" href={node.pullRequest.url}>{node.pullRequest.url}</a></div>
         <div>Updated at: {dayjs(node.pullRequest.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</div>
-        <div>URL: <a target="_blank" href={node.pullRequest.url}>{node.pullRequest.url}</a></div>
       </>
     }
     return {
@@ -46,16 +48,16 @@ function PRCard({con}) {
       children: <Info />,
       extra: <Tag color={tagColorMap[node.pullRequest.state]}>{node.pullRequest.state}</Tag>,
     }
-  })
+  }): []
   return (
-    <Card 
-    className="mb-4"
-    title={con.repository.name} 
-    extra={
-      <CardExtra 
-        owner={con.repository.owner.login} 
-        isPrivate={con.repository.isPrivate} />
-    }>
+    <Card
+      className="mb-4"
+      title={con.repository.name}
+      extra={
+        <CardExtra
+          owner={con.repository.owner.login}
+          isPrivate={con.repository.isPrivate} />
+      }>
       <Collapse items={items} defaultActiveKey={['1']} />
     </Card>
   )

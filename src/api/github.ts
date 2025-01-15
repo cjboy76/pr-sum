@@ -1,6 +1,6 @@
-import { graphql } from '@/gql'
+import { gql } from "@/__generated__"
 
-export const UserQuery = graphql(`
+export const UserQuery = gql(`
     query User{
         viewer {
             login
@@ -8,7 +8,7 @@ export const UserQuery = graphql(`
     }
 `)
 
-export const ContributionsQuery = graphql(`
+export const ContributionsQuery = gql(`
   query Contributions($from: DateTime!, $to: DateTime!, $size: Int = 50) {
     viewer {
         contributionsCollection(from: $from, to: $to) {
@@ -28,6 +28,7 @@ export const ContributionsQuery = graphql(`
                             state
                             updatedAt
                             url
+                            body
                             author {
                                 login
                             }
