@@ -2,6 +2,8 @@ import { Card, Collapse, Tag } from "antd"
 import { LockOutlined } from '@ant-design/icons';
 import dayjs from "dayjs";
 import { ContributionsQuery } from "@/__generated__/types";
+import ReactMarkDown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 type PRListProps = {
   isFetching: boolean
@@ -40,6 +42,9 @@ function PRCard({ contributionByRepo }: { contributionByRepo: ContributionsQuery
       return <>
         <div><a target="_blank" href={node.pullRequest.url}>{node.pullRequest.url}</a></div>
         <div>Updated at: {dayjs(node.pullRequest.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</div>
+        <ReactMarkDown remarkPlugins={[remarkGfm]} className='markdown'>
+          {node.pullRequest.body}
+        </ReactMarkDown>
       </>
     }
     return {
@@ -48,7 +53,7 @@ function PRCard({ contributionByRepo }: { contributionByRepo: ContributionsQuery
       children: <Info />,
       extra: <Tag color={tagColorMap[node.pullRequest.state]}>{node.pullRequest.state}</Tag>,
     }
-  }): []
+  }) : []
   return (
     <Card
       className="mb-4"
