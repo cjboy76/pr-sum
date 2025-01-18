@@ -14,7 +14,7 @@ export function PRList({ isFetching, contributions }: PRListProps) {
   if (isFetching) return <div className="h-40 p-4 grid place-items-center text-gray-500 text-xs"><span>Loading...</span></div>
   if (!contributions) return null
   return (
-    <div className="my-4">
+    <div className="mt-4">
       {contributions.map(contributionByRepo => (<PRCard key={contributionByRepo.repository.name} contributionByRepo={contributionByRepo} />))}
     </div>
   )

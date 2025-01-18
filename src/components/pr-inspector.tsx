@@ -2,38 +2,34 @@ import { ComponentProps, useState } from 'react'
 import { RepoForm } from './repo-form'
 import { PRList } from './pr-list'
 import { useContributions } from '@/hooks'
-import { Button } from 'antd'
+import { Button, message } from 'antd'
+import { getPrompt } from '@/lib/utils'
 
 export function PRInspector() {
   const [month, setMonth] = useState<Date>()
-  const { data: contributionsData, loading } = useContributions(month)
+  const { data: contributionsData, loading: isContributionsLoading } = useContributions(month)
   const contributions = contributionsData?.viewer.contributionsCollection.pullRequestContributionsByRepository
 
   const onRepoFormFinish: ComponentProps<typeof RepoForm>['onFinish'] = (values) => {
     setMonth(values['month'])
   }
 
-  const onGenerate = () => {
-
-  }
+  function onCopyClick() {
+    if (!contributions) return
+    navigator.clipboard.writeText(getPrompt(contributions))
+    message.success('Copied to your clipboard!')
+}
 
   return (
     <div className='flex flex-col relative'>
-      <RepoForm isFetching={loading} onFinish={onRepoFormFinish} />
+      <div className='flex justify-between'>
+        <RepoForm isFetching={isContributionsLoading} onFinish={onRepoFormFinish} />
+        <Button disabled={isContributionsLoading} onClick={onCopyClick}>Copy</Button>
+      </div>
       <PRList
-        isFetching={loading}
+        isFetching={isContributionsLoading}
         contributions={contributions}
       />
-      <Button
-        size='large'
-        color="default"
-        variant="solid"
-        className="fixed bottom-5 left-1/2 -translate-x-1/2"
-        disabled={loading || !contributions}
-        onClick={onGenerate}
-      >
-        Generate Summary
-      </Button>
     </div>
   )
 }
