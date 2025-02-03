@@ -5,7 +5,7 @@ const config: CodegenConfig = {
     {
       'https://api.github.com/graphql': {
         headers: {
-          Authorization: `Bearer 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`,
+          Authorization: `Bearer ${process.env.VITE_GITHUB_TOKEN}`,
           'User-Agent': 'Node'
         },
       },
