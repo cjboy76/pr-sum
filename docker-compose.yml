@@ -4,4 +4,4 @@ services:
     ports:
       - 3333:3333
     environment: 
-      VITE_GITHUB_TOKEN: ""
+     - VITE_GITHUB_TOKEN=${VITE_GITHUB_TOKEN}
