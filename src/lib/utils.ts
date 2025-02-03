@@ -1,19 +1,12 @@
 import { ContributionsQuery, PullRequest } from "@/__generated__/types"
 import { DeepPartial } from "@apollo/client/utilities"
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
-
 
 function _pullRequestTemplate(pullRequest: DeepPartial<PullRequest>, repoName: string) {
   return `
-- Title: ${pullRequest.title}
-- Repository: ${repoName}
-- Status: ${pullRequest.state}
-- Changes: 
+## Title: ${pullRequest.title}
+## Repository: ${repoName}
+## Status: ${pullRequest.state}
+## Changes: 
 ${pullRequest.body}
 ---------------------------------------
   `
