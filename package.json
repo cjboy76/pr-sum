@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "preview": "vite preview",
-    "codegen": "graphql-codegen"
+    "codegen": "graphql-codegen --config ./src/codegen.ts"
   },
   "dependencies": {
     "@ant-design/icons": "^5.5.2",

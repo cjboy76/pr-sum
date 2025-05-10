@@ -1,17 +1,19 @@
 import { CodegenConfig } from '@graphql-codegen/cli';
+import { loadEnv } from 'vite'
+
+const envConfig = {...loadEnv('DEV', process.cwd())};
 
 const config: CodegenConfig = {
   schema: [
     {
       'https://api.github.com/graphql': {
         headers: {
-          Authorization: `Bearer ${process.env.VITE_GITHUB_TOKEN}`,
+          Authorization: `Bearer ${envConfig.VITE_GITHUB_TOKEN}`,
           'User-Agent': 'Node'
         },
       },
     },
   ],
-  // schema: 'schema.docs.graphql',
   documents: ['src/**/*.ts', 'src/**/*.tsx'],
   ignoreNoDocuments: true, // for better experience with the watcher
   generates: {

@@ -26,5 +26,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "codegen.ts"],
+  "include": ["src", "src/codegen.ts"],
 }
