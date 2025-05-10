@@ -4,6 +4,8 @@ import dayjs from "dayjs";
 import { ContributionsQuery } from "@/__generated__/types";
 import ReactMarkDown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { Divider } from 'antd';
+
 
 type PRListProps = {
   isFetching: boolean
@@ -40,8 +42,11 @@ function PRCard({ contributionByRepo }: { contributionByRepo: ContributionsQuery
     if (!node) return {}
     const Info = () => {
       return <>
-        <div><a target="_blank" href={node.pullRequest.url}>{node.pullRequest.url}</a></div>
-        <div>Updated at: {dayjs(node.pullRequest.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</div>
+      <div className="flex justify-end items-center">
+        <div className="text-gray-400"><a target="_blank" href={node.pullRequest.url}>Link</a></div>
+        <Divider type="vertical" />
+        <div className="text-gray-400">{dayjs(node.pullRequest.updatedAt).format('YYYY-MM-DD')}</div>
+      </div>
         <ReactMarkDown remarkPlugins={[remarkGfm]} className='markdown'>
           {node.pullRequest.body}
         </ReactMarkDown>
