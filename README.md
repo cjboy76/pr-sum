@@ -11,7 +11,7 @@ https://github.com/user-attachments/assets/b8a50746-9f5b-4bfd-a8cb-ecbc9dd58061
 VITE_GITHUB_TOKEN=your_token
 ```
 
-3. Run app with docker compose
+3. Development with docker compose
 ```
 docker compose up
 ```

@@ -1,8 +1,10 @@
 FROM node:lts-slim
-RUN corepack enable
-RUN corepack prepare pnpm@10.0.0 --activate
 
 WORKDIR /pr-sum
+
+COPY package.json pnpm-lock.yaml* ./
+
+RUN corepack enable pnpm && pnpm i;
 
 COPY . .
 
